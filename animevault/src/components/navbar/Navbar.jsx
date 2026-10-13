@@ -1,3 +1,5 @@
+ import './Navbar.css'
+ 
  function Navbar() {
     return(
         <nav className="navbar">
@@ -6,7 +8,7 @@
             </h1>
 
             <div className="nav-links">
-                <a href="#">Explorar</a>
+                <a href="#" className='active'>Explorar</a>
                 <a href="#">Ranking</a>
                 <a href="#">Mis colecciones</a>
             </div>
