@@ -1,0 +1,37 @@
+.home {
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.home h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.home p {
+  color: #a4a4b2;
+  margin-bottom: 30px;
+}
+
+.anime-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .anime-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .anime-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home {
+    padding: 20px;
+  }
+}
