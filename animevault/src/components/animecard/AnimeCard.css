@@ -1,0 +1,32 @@
+.anime-card {
+    cursor: pointer;
+    transition: transform 0.3s easy;
+    min-width: 0;
+}
+
+.anime-card:hover {
+    transform: translateY(-5px);
+}
+
+.anime-image {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+}
+
+.anime-title {
+    font-size: 15px;
+    margin: 12px 0 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.anime-info{
+    display: flex;
+    justify-content: space-between;
+    color: #a4a4b2;
+    font-size: 13px;
+}
