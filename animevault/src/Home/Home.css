@@ -35,3 +35,28 @@
     padding: 20px;
   }
 }
+
+
+.search-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 14px 18px;
+    margin-bottom: 30px;
+
+    background-color: #1b1c28;
+    border: 1px solid #363648;
+    border-radius: 8px;
+
+    color: white;
+    font-size: 14px;
+    outline: none;
+}
+
+
+.search-input:focus{
+    border-color: #9672f1;
+}
+
+.search-input ::placeholder {
+    color: #777787;
+}
