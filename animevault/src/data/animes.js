@@ -6,6 +6,7 @@ export const animes = [
     image: "https://cdn.myanimelist.net/images/anime/10/47347.jpg",
     rating: 4.9,
     year: 2013,
+    genres: ['Misterio', 'Thriller', 'Sobrenatural']
   },
   {
     id: 2,
@@ -13,6 +14,8 @@ export const animes = [
     image: "https://cdn.myanimelist.net/images/anime/9/9453.jpg",
     rating: 4.8,
     year: 2006,
+    genres: ['Acción', 'Aventura', 'Fantasía']
+
   },
   {
     id: 3,
@@ -20,5 +23,7 @@ export const animes = [
     image: "https://cdn.myanimelist.net/images/anime/1223/96541.jpg",
     rating: 4.9,
     year: 2009,
+    genres: ['Acción', 'Aventura', 'Fantasía']
+
   },
 ];
