@@ -60,3 +60,23 @@
 .search-input ::placeholder {
     color: #777787;
 }
+
+
+.genre-select {
+  padding: 14px 18px;
+  margin-bottom: 30px;
+  margin-left: 10px;
+
+  background-color: #1b1c28;
+  color: white;
+  border: 1px solid #363648;
+  border-radius: 8px;
+
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.genre-select:focus{
+  outline: none;
+  border-color: #9672f1;
+}
