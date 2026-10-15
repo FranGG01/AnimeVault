@@ -1,25 +1,45 @@
 import AnimeCard from '../components/animecard/AnimeCard';
-import { animes } from '../data/animes';
 import './Home.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Home() {
 
+  {/*filters states */}
 const [search, setSearch] = useState('');
 const [genre, setGenre] = useState('Todos');
 const [sortBy, setSortBy] = useState('rating');
 
+  {/*api states */}
+const [animes, setAnimes] = useState([]);
+
+useEffect(() => {
+  async function fetchAnimes(){
+    const response = await fetch('https://api.tenrai.org/v1/top/anime');
+    const data = await response.json();
+
+    console.log(data)
+
+    console.log("Primer anime:", data.data[0]);
+
+    setAnimes(data.data)
+
+  }
+
+  fetchAnimes();
+}, []);
+
+{/*Input anime */}
 const filteredAnimes = animes.filter((anime) =>{
   const matchesSearch = anime.title.toLowerCase().includes(search.toLowerCase());
 
   const matchesGenre = 
-  genre === 'Todos' || anime.genres.includes(genre);
+  genre === 'Todos' || anime.genres.some((genero) => genero.name === genre);
   return matchesSearch && matchesGenre
 }) ;
 
 {/*Ordenar Animes filtro */}
   if (sortBy === 'rating') {
-    filteredAnimes.sort((a, b) => b.rating - a.rating);
+    filteredAnimes.sort((a, b) => b.score - a.score);
   } else if (sortBy === 'recent') {
     filteredAnimes.sort((a, b) => b.year - a.year);
   } else if (sortBy === 'oldest') {
@@ -50,14 +70,13 @@ const filteredAnimes = animes.filter((anime) =>{
     value={genre}
     onChange={(e) => setGenre(e.target.value)}
     >
-      <option value='Todos'>Todos los géneros</option>
-      <option value='Acción'>Acción</option>
-      <option value='Aventura'>Aventura</option>
-      <option value='Fantasía'>Fantasía</option>
-      <option value='Drama'>Drama</option>
-      <option value='Misterio'>Misterio</option>
-      <option value='Thriller'>Thriller</option>
-      <option value='Sobrenatural'>Sobrenatural</option>
+      <option value="Action">Acción</option>
+      <option value="Adventure">Aventura</option>
+      <option value="Fantasy">Fantasía</option>
+      <option value="Drama">Drama</option>
+      <option value="Mystery">Misterio</option>
+      <option value="Suspense">Suspense</option>
+      <option value="Supernatural">Sobrenatural</option>
 
     </select>
 
@@ -79,10 +98,10 @@ const filteredAnimes = animes.filter((anime) =>{
       <div className="anime-grid">
         {filteredAnimes.map((anime) => (
           <AnimeCard
-            key={anime.id}
+            key={anime.mal_id}
             title={anime.title}
-            image={anime.image}
-            rating={anime.rating}
+            image={anime.images.jpg.image_url}
+            rating={anime.score}
             year={anime.year}
           /> 
         ))}
