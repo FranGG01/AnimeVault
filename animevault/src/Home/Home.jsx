@@ -7,14 +7,24 @@ function Home() {
 
 const [search, setSearch] = useState('');
 const [genre, setGenre] = useState('Todos');
+const [sortBy, setSortBy] = useState('rating');
+
 const filteredAnimes = animes.filter((anime) =>{
   const matchesSearch = anime.title.toLowerCase().includes(search.toLowerCase());
 
-  const marchesGenre = 
+  const matchesGenre = 
   genre === 'Todos' || anime.genres.includes(genre);
-  return matchesSearch && marchesGenre
+  return matchesSearch && matchesGenre
 }) ;
 
+{/*Ordenar Animes filtro */}
+  if (sortBy === 'rating') {
+    filteredAnimes.sort((a, b) => b.rating - a.rating);
+  } else if (sortBy === 'recent') {
+    filteredAnimes.sort((a, b) => b.year - a.year);
+  } else if (sortBy === 'oldest') {
+    filteredAnimes.sort((a, b) => a.year - b.year);
+  }
 
   return (
 
@@ -22,6 +32,7 @@ const filteredAnimes = animes.filter((anime) =>{
       <h2>Descubre tu próximo anime</h2>
       <p>Explora los animes mejor valorados.</p>
 
+<div className="filters-bar">
      {/*Buscador animes */}
       <input 
         type='text'
@@ -50,13 +61,21 @@ const filteredAnimes = animes.filter((anime) =>{
 
     </select>
 
-    {filteredAnimes.length === 0 && (
-        <p>No se encontraron animes</p>
-        )}
+    <select 
+    className='sort-select'
+    value={sortBy}
+    onChange={(e)=> setSortBy(e.target.value)}
+    >
+      <option value='rating'>Mejor valorados</option>
+      <option value='recent'>Más recientes</option>
+      <option value='oldest'>Más antiguos</option>
 
+    </select>
+</div>
+    
+    <p>{filteredAnimes.length} {filteredAnimes.length === 1 ?  'Resultado encontrado' : 'Resultados encontrados'} </p>
 
       {/*Anime Card */}
-
       <div className="anime-grid">
         {filteredAnimes.map((anime) => (
           <AnimeCard

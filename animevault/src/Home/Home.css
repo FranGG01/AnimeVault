@@ -80,3 +80,62 @@
   outline: none;
   border-color: #9672f1;
 }
+
+.sort-select {
+  padding: 14px 18px;
+  margin-bottom: 30px;
+  margin-left: 10px;
+
+  background-color: #1b1c28;
+  color: white;
+  border: 1px solid #363648;
+  border-radius: 8px;
+
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sort-select:focus{
+  outline: none;
+  border-color: #9672f1;
+}
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 220px;
+  max-width: none;
+}
+
+.genre-select,
+.sort-select {
+  min-width: 170px;
+}
+
+.search-input,
+.genre-select,
+.sort-select {
+  padding: 14px 18px;
+  margin-bottom: 0;
+
+  background-color: #1b1c28;
+  color: white;
+  border: 1px solid #363648;
+  border-radius: 8px;
+
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input:focus,
+.genre-select:focus,
+.sort-select:focus {
+  border-color: #9672f1;
+}
