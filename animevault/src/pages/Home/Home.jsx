@@ -1,4 +1,4 @@
-import AnimeCard from '../components/animecard/AnimeCard';
+import AnimeCard from '../../components/animecard/AnimeCard';
 import './Home.css';
 import { useState, useEffect } from 'react';
 
