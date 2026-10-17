@@ -15,7 +15,39 @@ function Home() {
 
   useEffect(() => {
     async function fetchAnimes() {
-      const response = await fetch(`https://api.tenrai.org/v1/top/anime?page=${page}`);
+      const params = new URLSearchParams();
+
+      params.set('page', page);
+      params.set('limit', 25);
+
+      if (search.trim()) {
+        params.set('q', search.trim());
+      }
+
+      if (genre !== 'Todos') {
+        params.set('genres', genre);
+      }
+
+      if (sortBy === 'rating') {
+        params.set('order_by', 'score');
+        params.set('sort', 'desc');
+      } else if (sortBy === 'recent') {
+        params.set('order_by', 'start_date');
+        params.set('sort', 'desc');
+      } else if (sortBy === 'oldest') {
+        params.set('order_by', 'start_date');
+        params.set('sort', 'asc');
+      }
+
+      const url = `https://api.tenrai.org/v1/anime?${params.toString()}`;
+
+      console.log('URL:', url);
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
       const data = await response.json();
 
       console.log(data)
@@ -27,25 +59,11 @@ function Home() {
     }
 
     fetchAnimes();
-  }, [page]);
+  }, [page, search, genre, sortBy]);
 
-  {/*Input anime */ }
-  const filteredAnimes = animes.filter((anime) => {
-    const matchesSearch = anime.title.toLowerCase().includes(search.toLowerCase());
-
-    const matchesGenre =
-      genre === 'Todos' || anime.genres.some((genero) => genero.name === genre);
-    return matchesSearch && matchesGenre
-  });
 
   {/*Ordenar Animes filtro */ }
-  if (sortBy === 'rating') {
-    filteredAnimes.sort((a, b) => b.score - a.score);
-  } else if (sortBy === 'recent') {
-    filteredAnimes.sort((a, b) => b.year - a.year);
-  } else if (sortBy === 'oldest') {
-    filteredAnimes.sort((a, b) => a.year - b.year);
-  }
+  const filteredAnimes = animes;
 
   return (
 
@@ -67,18 +85,21 @@ function Home() {
         {/*FILTROS */}
 
         <select
-          className='genre-select'
+          className="genre-select"
           value={genre}
-          onChange={(e) => setGenre(e.target.value)}
+          onChange={(e) => {
+            setGenre(e.target.value);
+            setPage(1);
+          }}
         >
           <option value="Todos">Todos los géneros</option>
-          <option value="Action">Acción</option>
-          <option value="Adventure">Aventura</option>
-          <option value="Fantasy">Fantasía</option>
-          <option value="Drama">Drama</option>
-          <option value="Mystery">Misterio</option>
-          <option value="Suspense">Suspense</option>
-          <option value="Supernatural">Sobrenatural</option>
+          <option value="1">Acción</option>
+          <option value="2">Aventura</option>
+          <option value="10">Fantasía</option>
+          <option value="8">Drama</option>
+          <option value="7">Misterio</option>
+          <option value="41">Suspense</option>
+          <option value="37">Sobrenatural</option>
 
         </select>
 
@@ -128,7 +149,7 @@ function Home() {
           Siguiente →
         </button>
       </div>
-    </main>
+    </main >
   );
 }
 
