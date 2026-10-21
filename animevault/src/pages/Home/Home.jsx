@@ -122,10 +122,12 @@ function Home() {
         {filteredAnimes.map((anime) => (
           <AnimeCard
             key={anime.mal_id}
+            id={anime.mal_id}
             title={anime.title}
             image={anime.images.jpg.image_url}
             rating={anime.score}
             year={anime.year}
+            
           />
         ))}
       </div>
