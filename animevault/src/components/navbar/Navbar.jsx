@@ -1,23 +1,26 @@
- import './Navbar.css'
- 
- function Navbar() {
-    return(
-        <nav className="navbar">
-            <h1 className="logo">
-                ANIME<span>VAULT</span>
-            </h1>
+import "./Navbar.css";
+import { Link, NavLink } from "react-router";
 
-            <div className="nav-links">
-                <a href="#" className='active'>Explorar</a>
-                <a href="#">Ranking</a>
-                <a href="#">Mis colecciones</a>
-            </div>
+function Navbar() {
+  return (
+    <nav className="navbar">
+      <Link to="/" className="logo-link">
+        <h1 className="logo">
+          ANIME<span>VAULT</span>
+        </h1>
+      </Link>
+      <div className="nav-links">
+        <NavLink to="/" endo>
+          Explorar
+        </NavLink>
+        
+        <a href="#">Ranking</a>
+        <a href="#">Mis colecciones</a>
+      </div>
 
-            <div className="profile">
-                F
-            </div>
-        </nav>
-    )
+      <div className="profile">F</div>
+    </nav>
+  );
 }
 
 export default Navbar;

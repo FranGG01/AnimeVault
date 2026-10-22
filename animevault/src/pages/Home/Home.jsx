@@ -1,72 +1,90 @@
-import AnimeCard from '../../components/animecard/AnimeCard';
-import './Home.css';
-import { useState, useEffect } from 'react';
+import AnimeCard from "../../components/animecard/AnimeCard";
+import "./Home.css";
+import { useState, useEffect } from "react";
 
 function Home() {
-
-  {/*filters states */ }
-  const [search, setSearch] = useState('');
-  const [genre, setGenre] = useState('Todos');
-  const [sortBy, setSortBy] = useState('rating');
+  {
+    /*filters states */
+  }
+  const [search, setSearch] = useState("");
+  const [genre, setGenre] = useState("Todos");
+  const [sortBy, setSortBy] = useState("rating");
   const [page, setPage] = useState(1);
 
-  {/*api states */ }
+  {
+    /*api states */
+  }
   const [animes, setAnimes] = useState([]);
+  const [pagination, setPagination] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchAnimes() {
+      
       const params = new URLSearchParams();
 
-      params.set('page', page);
-      params.set('limit', 25);
+      params.set("page", page);
+      params.set("limit", 25);
 
       if (search.trim()) {
-        params.set('q', search.trim());
+        params.set("q", search.trim());
       }
 
-      if (genre !== 'Todos') {
-        params.set('genres', genre);
+      if (genre !== "Todos") {
+        params.set("genres", genre);
       }
 
-      if (sortBy === 'rating') {
-        params.set('order_by', 'score');
-        params.set('sort', 'desc');
-      } else if (sortBy === 'recent') {
-        params.set('order_by', 'start_date');
-        params.set('sort', 'desc');
-      } else if (sortBy === 'oldest') {
-        params.set('order_by', 'start_date');
-        params.set('sort', 'asc');
+      if (sortBy === "rating") {
+        params.set("order_by", "score");
+        params.set("sort", "desc");
+      } else if (sortBy === "recent") {
+        params.set("order_by", "start_date");
+        params.set("sort", "desc");
+      } else if (sortBy === "oldest") {
+        params.set("order_by", "start_date");
+        params.set("sort", "asc");
       }
 
       const url = `https://api.tenrai.org/v1/anime?${params.toString()}`;
 
-      console.log('URL:', url);
+      console.log("URL:", url);
 
-      const response = await fetch(url);
+      try {
+        setLoading(true);
+        setError(null);
 
-      if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        console.log("Datos recibidos:", data);
+
+        setAnimes(data.data);
+        setPagination(data.pagination);
+      } catch (err) {
+        console.error("Error al cargar los animes:", err);
+        setError(err.message);
+        setAnimes([]);
+        setPagination(null);
+      } finally {
+        setLoading(false);
       }
-      const data = await response.json();
-
-      console.log(data)
-
-      console.log("Primer anime:", data.data[0]);
-
-      setAnimes(data.data)
-
     }
 
     fetchAnimes();
   }, [page, search, genre, sortBy]);
 
-
-  {/*Ordenar Animes filtro */ }
+  {
+    /*Ordenar Animes filtro */
+  }
   const filteredAnimes = animes;
-
+  const total = pagination?.items?.total ?? 0;
   return (
-
     <main className="home">
       <h2>Descubre tu próximo anime</h2>
       <p>Explora los animes mejor valorados.</p>
@@ -74,13 +92,15 @@ function Home() {
       <div className="filters-bar">
         {/*Buscador animes */}
         <input
-          type='text'
-          placeholder='Buscar anime...'
+          type="text"
+          placeholder="Buscar anime..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className='search-input'
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
+          className="search-input"
         />
-
 
         {/*FILTROS */}
 
@@ -100,37 +120,51 @@ function Home() {
           <option value="7">Misterio</option>
           <option value="41">Suspense</option>
           <option value="37">Sobrenatural</option>
-
         </select>
 
         <select
-          className='sort-select'
+          className="sort-select"
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
+          onChange={(e) => {
+            setSortBy(e.target.value);
+            setPage(1);
+          }}
         >
-          <option value='rating'>Mejor valorados</option>
-          <option value='recent'>Más recientes</option>
-          <option value='oldest'>Más antiguos</option>
-
+          <option value="rating">Mejor valorados</option>
+          <option value="recent">Más recientes</option>
+          <option value="oldest">Más antiguos</option>
         </select>
       </div>
+      {/* Estados de carga y error */}
+      {loading && <p>Cargando animes...</p>}
 
-      <p>{filteredAnimes.length} {filteredAnimes.length === 1 ? 'Resultado encontrado' : 'Resultados encontrados'} </p>
+      {error && (
+        <p className="error-message">Error al cargar los animes: {error}</p>
+      )}
 
-      {/*Anime Card */}
-      <div className="anime-grid">
-        {filteredAnimes.map((anime) => (
-          <AnimeCard
-            key={anime.mal_id}
-            id={anime.mal_id}
-            title={anime.title}
-            image={anime.images.jpg.image_url}
-            rating={anime.score}
-            year={anime.year}
-            
-          />
-        ))}
-      </div>
+      {/* Resultados */}
+      {!loading && !error && (
+        <>
+          <p>
+            {total}{" "}
+            {total === 1 ? "Resultado encontrado" : "Resultados encontrados"}
+          </p>
+
+          {/*Anime Card */}
+          <div className="anime-grid">
+            {filteredAnimes.map((anime) => (
+              <AnimeCard
+                key={anime.mal_id}
+                id={anime.mal_id}
+                title={anime.title}
+                image={anime.images.jpg.image_url}
+                rating={anime.score}
+                year={anime.year}
+              />
+            ))}
+          </div>
+        </>
+      )}
       <div className="pagination">
         <button
           className="pagination-btn"
@@ -140,18 +174,19 @@ function Home() {
           ← Anterior
         </button>
 
-        <span className="pagination-current">
-          {page}
-        </span>
+        <span className="pagination-current">{page}</span>
 
         <button
           className="pagination-btn"
-          onClick={() => setPage(page + 1)}
+          onClick={() => {
+            setPage(page + 1);
+          }}
+          disabled={!pagination?.has_next_page}
         >
           Siguiente →
         </button>
       </div>
-    </main >
+    </main>
   );
 }
 

@@ -1,17 +1,23 @@
 import "./AnimeDetail.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { Link } from "react-router";
 
 function AnimeDetail() {
   const { id } = useParams();
   const [anime, setAnime] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   useEffect(() => {
+    const controller = new AbortController();
+
     async function fetchAnime() {
       try {
-        const response = await fetch(`https://api.tenrai.org/v1/anime/${id}`);
+        setLoading(true);
+        setError(null);
+        const response = await fetch(`https://api.tenrai.org/v1/anime/${id}`, {
+          signal: controller.signal,
+        });
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`);
         }
@@ -19,12 +25,20 @@ function AnimeDetail() {
         console.log(data);
         setAnime(data.data);
       } catch (error) {
+        if (error.name === "AbortError") {
+          return;
+        }
         setError(error.message);
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
     fetchAnime();
+    return () => {
+      controller.abort();
+    };
   }, [id]);
 
   if (loading === true) {
@@ -38,31 +52,40 @@ function AnimeDetail() {
   }
 
   return (
-    <main className="anime-detail">
-      <div className="anime-detail-poster-wrapper">
-        <img
-          src={anime.images.jpg.large_image_url}
-          alt={anime.title}
-          className="anime-detail-poster"
-        />
-      </div>
+    <>
+      <div className="anime-detail-container">
+        <Link to="/" className="back-link">
+          ← Volver al catálogo
+        </Link>
+        <main className="anime-detail">
+          <div className="anime-detail-poster-wrapper">
+            <img
+              src={anime.images.jpg.large_image_url}
+              alt={anime.title}
+              className="anime-detail-poster"
+            />
+          </div>
 
-      <div className="anime-detail-info">
-        <h1> {anime.title} </h1>
-        <p className="anime-score">Puntuación: {anime.score} </p>
-        <p className="anime-episodes">
-          Episodios: {anime.episodes || "Sin episodios disponibles."}
-        </p>
-        <div className="anime-genres">
-          {anime.genres?.map((genre) => (
-            <span className="genre-tag" key={genre.mal_id}>
-              {genre.name}
-            </span>
-          ))}
-        </div>
-        <p className="anime-synopsis">Sinopsis: {anime.synopsis || "Sin sinopsis disponible."} </p>
+          <div className="anime-detail-info">
+            <h1> {anime.title} </h1>
+            <p className="anime-score">Puntuación: {anime.score} </p>
+            <p className="anime-episodes">
+              Episodios: {anime.episodes || "Sin episodios disponibles."}
+            </p>
+            <div className="anime-genres">
+              {anime.genres?.map((genre) => (
+                <span className="genre-tag" key={genre.mal_id}>
+                  {genre.name}
+                </span>
+              ))}
+            </div>
+            <p className="anime-synopsis">
+              Sinopsis: {anime.synopsis || "Sin sinopsis disponible."}{" "}
+            </p>
+          </div>
+        </main>
       </div>
-    </main>
+    </>
   );
 }
 
