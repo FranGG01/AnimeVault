@@ -7,11 +7,14 @@ function AnimeDetail() {
   const [anime, setAnime] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   useEffect(() => {
+    const controller = new AbortController();
+
     async function fetchAnime() {
       try {
-        const response = await fetch(`https://api.tenrai.org/v1/anime/${id}`);
+        setLoading(true);
+        setError(null);
+        const response = await fetch(`https://api.tenrai.org/v1/anime/${id}`, {signal: controller.signal});
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`);
         }
@@ -25,7 +28,9 @@ function AnimeDetail() {
       }
     }
     fetchAnime();
+    return () => {controller.abort()}
   }, [id]);
+ 
 
   if (loading === true) {
     return <p>Cargando anime...</p>;
@@ -60,7 +65,9 @@ function AnimeDetail() {
             </span>
           ))}
         </div>
-        <p className="anime-synopsis">Sinopsis: {anime.synopsis || "Sin sinopsis disponible."} </p>
+        <p className="anime-synopsis">
+          Sinopsis: {anime.synopsis || "Sin sinopsis disponible."}{" "}
+        </p>
       </div>
     </main>
   );

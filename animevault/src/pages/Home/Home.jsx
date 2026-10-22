@@ -21,6 +21,7 @@ function Home() {
 
   useEffect(() => {
     async function fetchAnimes() {
+      
       const params = new URLSearchParams();
 
       params.set("page", page);
@@ -148,7 +149,7 @@ function Home() {
             {total}{" "}
             {total === 1 ? "Resultado encontrado" : "Resultados encontrados"}
           </p>
-          
+
           {/*Anime Card */}
           <div className="anime-grid">
             {filteredAnimes.map((anime) => (
