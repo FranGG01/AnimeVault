@@ -7,7 +7,7 @@
   color: #ffffff;
 }
 
-/* Columna izquierda: portada */
+/* Columna izquierda */
 .anime-detail-poster-wrapper {
   flex-shrink: 0;
   width: 300px;
@@ -20,7 +20,7 @@
   object-fit: cover;
 }
 
-/* Columna derecha: información */
+/* Columna derecha*/
 .anime-detail-info {
   flex: 1;
   min-width: 0;
@@ -42,7 +42,7 @@
   font-weight: 600;
 }
 
-/* Géneros como etiquetas */
+/* Géneros */
 .anime-genres {
   display: flex;
   flex-wrap: wrap;
@@ -59,14 +59,14 @@
   font-size: 0.85rem;
 }
 
-/* Sinopsis: respeta los saltos de línea (\n\n) */
+/*Sinopsis*/
 .anime-synopsis {
   white-space: pre-line;
   line-height: 1.6;
   color: #c9c9d1;
 }
 
-/* Móvil: una sola columna */
+/* Móvil */
 @media (max-width: 768px) {
   .anime-detail {
     flex-direction: column;
