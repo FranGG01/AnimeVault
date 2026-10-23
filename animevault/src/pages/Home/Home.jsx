@@ -20,8 +20,9 @@ function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function fetchAnimes() {
-      
       const params = new URLSearchParams();
 
       params.set("page", page);
@@ -54,7 +55,9 @@ function Home() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          signal: controller.signal,
+        });
 
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`);
@@ -67,16 +70,23 @@ function Home() {
         setAnimes(data.data);
         setPagination(data.pagination);
       } catch (err) {
+        if(err.name === "AbortError") { return; }
         console.error("Error al cargar los animes:", err);
         setError(err.message);
         setAnimes([]);
         setPagination(null);
       } finally {
-        setLoading(false);
+        if(!controller.signal.aborted){
+          setLoading(false);
+        }
+        
       }
     }
 
     fetchAnimes();
+    return () => {
+      controller.abort();
+    };
   }, [page, search, genre, sortBy]);
 
   {

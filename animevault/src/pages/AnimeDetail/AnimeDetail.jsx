@@ -15,9 +15,12 @@ function AnimeDetail() {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch(`https://api.tenrai.org/v1/anime/${id}`, {
+
+        const url = `https://api.tenrai.org/v1/anime/${id}`;
+        const response = await fetch(url, {
           signal: controller.signal,
         });
+
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`);
         }
