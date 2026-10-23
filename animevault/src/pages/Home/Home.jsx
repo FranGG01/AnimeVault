@@ -49,7 +49,6 @@ function Home() {
 
       const url = `https://api.tenrai.org/v1/anime?${params.toString()}`;
 
-      console.log("URL:", url);
 
       try {
         setLoading(true);
@@ -65,7 +64,6 @@ function Home() {
 
         const data = await response.json();
 
-        console.log("Datos recibidos:", data);
 
         setAnimes(data.data);
         setPagination(data.pagination);

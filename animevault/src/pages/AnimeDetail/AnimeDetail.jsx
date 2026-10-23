@@ -25,7 +25,7 @@ function AnimeDetail() {
           throw new Error(`Error HTTP: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data);
+        
         setAnime(data.data);
       } catch (error) {
         if (error.name === "AbortError") {
