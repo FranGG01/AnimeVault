@@ -14,7 +14,8 @@ function Navbar() {
           Explorar
         </NavLink>
         
-        <a href="#">Ranking</a>
+        <NavLink to='/ranking' endo>Ranking</NavLink>
+
         <a href="#">Mis colecciones</a>
       </div>
 
