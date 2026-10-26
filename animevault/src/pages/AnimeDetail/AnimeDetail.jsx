@@ -1,13 +1,14 @@
 import "./AnimeDetail.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 function AnimeDetail() {
   const { id } = useParams();
   const [anime, setAnime] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const controller = new AbortController();
 
@@ -25,7 +26,7 @@ function AnimeDetail() {
           throw new Error(`Error HTTP: ${response.status}`);
         }
         const data = await response.json();
-        
+
         setAnime(data.data);
       } catch (error) {
         if (error.name === "AbortError") {
@@ -57,9 +58,9 @@ function AnimeDetail() {
   return (
     <>
       <div className="anime-detail-container">
-        <Link to="/" className="back-link">
+        <button onClick={() => navigate(-1)} className="back-link">
           ← Volver al catálogo
-        </Link>
+        </button>
         <main className="anime-detail">
           <div className="anime-detail-poster-wrapper">
             <img
