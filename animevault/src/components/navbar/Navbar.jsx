@@ -10,13 +10,13 @@ function Navbar() {
         </h1>
       </Link>
       <div className="nav-links">
-        <NavLink to="/" endo>
+        <NavLink to="/" end>
           Explorar
         </NavLink>
         
-        <NavLink to='/ranking' endo>Ranking</NavLink>
+        <NavLink to='/ranking' end>Ranking</NavLink>
 
-        <a href="#">Mis colecciones</a>
+        <NavLink to='/collections end'>Collections</NavLink>
       </div>
 
       <div className="profile">F</div>
