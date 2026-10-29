@@ -1,14 +1,27 @@
 import "./AnimeDetail.css";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router";
-import { Link, useNavigate } from "react-router";
-
+import { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router";
+import { CollectionsContext } from "../../context/CollectionsContext";
 function AnimeDetail() {
   const { id } = useParams();
   const [anime, setAnime] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [showSelector, setShowSelector] = useState(false);
+  const { collections, addAnimeToCollection } = useContext(CollectionsContext);
+
+  function handleSave(collectionId) {
+    const animeToSave = {
+      mal_id: anime.mal_id,
+      title: anime.title,
+      image: anime.images.jpg.image_url,
+      score: anime.score,
+      year: anime.year,
+    };
+    addAnimeToCollection(collectionId, animeToSave);
+  }
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -86,6 +99,19 @@ function AnimeDetail() {
             <p className="anime-synopsis">
               Sinopsis: {anime.synopsis || "Sin sinopsis disponible."}{" "}
             </p>
+            <button
+              className="save-button"
+              onClick={() => setShowSelector(!showSelector)}
+            >
+              🔖 Guardar
+            </button>
+            {showSelector && (
+              <ul className="collection-selector">
+                {collections.map((collection) => (
+                  <li key={collection.id} onClick={() => handleSave(collection.id)}>{collection.name}</li>
+                ))}
+              </ul>
+            )}
           </div>
         </main>
       </div>

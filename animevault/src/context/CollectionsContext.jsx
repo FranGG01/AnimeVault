@@ -14,8 +14,19 @@ export function CollectionsProvider({ children }) {
     saveCollections(update);
   }
 
+  function addAnimeToCollection(collectionId, anime) {
+    const updated = collections.map((collection) => {
+      if (collection.id === collectionId) {
+        return { ...collection, animes: [...collection.animes, anime] };
+      }
+      return collection;
+    });
+    setCollections(updated);
+    saveCollections(updated);
+  }
+
   return (
-    <CollectionsContext.Provider value={{ collections, createCollection }}>
+    <CollectionsContext.Provider value={{ collections, createCollection, addAnimeToCollection }}>
       {children}
     </CollectionsContext.Provider>
   );
