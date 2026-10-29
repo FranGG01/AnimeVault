@@ -9,7 +9,19 @@ function AnimeDetail() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [showSelector, setShowSelector] = useState(false);
-  const { collections } = useContext(CollectionsContext);
+  const { collections, addAnimeToCollection } = useContext(CollectionsContext);
+
+  function handleSave(collectionId) {
+    const animeToSave = {
+      mal_id: anime.mal_id,
+      title: anime.title,
+      image: anime.images.jpg.image_url,
+      score: anime.score,
+      year: anime.year,
+    };
+    addAnimeToCollection(collectionId, animeToSave);
+  }
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -96,7 +108,7 @@ function AnimeDetail() {
             {showSelector && (
               <ul className="collection-selector">
                 {collections.map((collection) => (
-                  <li key={collection.id}>{collection.name}</li>
+                  <li key={collection.id} onClick={() => handleSave(collection.id)}>{collection.name}</li>
                 ))}
               </ul>
             )}

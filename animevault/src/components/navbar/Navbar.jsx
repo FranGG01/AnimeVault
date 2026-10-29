@@ -16,7 +16,7 @@ function Navbar() {
         
         <NavLink to='/ranking' end>Ranking</NavLink>
 
-        <NavLink to='/collections end'>Collections</NavLink>
+        <NavLink to='/collections '>Collections</NavLink>
       </div>
 
       <div className="profile">F</div>
