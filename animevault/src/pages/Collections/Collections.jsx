@@ -25,6 +25,13 @@ function Collections() {
       />
       <button onClick={handleCreate}>Crear colección</button>
       <p> {collections.length} colecciones </p>
+      <ul>
+      {collections.map((collection)=> 
+       <li key= {collection.id}>
+          {collection.name}
+       </li>
+      )}
+      </ul>
     </main>
   );
 }
