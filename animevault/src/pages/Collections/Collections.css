@@ -1,0 +1,94 @@
+.collections-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  color: #ffffff;
+}
+
+/* Formulario */
+.collection-form {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.collection-input {
+  flex: 1;
+  max-width: 320px;
+  padding: 0.6rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(150, 114, 241, 0.3);
+  border-radius: 8px;
+  color: #ffffff;
+  font: inherit;
+}
+
+.collection-input:focus {
+  outline: none;
+  border-color: #9672f1;
+}
+
+.collection-button {
+  padding: 0.6rem 1.2rem;
+  background: #9672f1;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.collection-button:hover {
+  background: #b8a0ff;
+}
+
+/* Contador */
+.collections-count {
+  color: #c9c9d1;
+}
+
+/* Lista de colecciones */
+.collections-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.collection-item {
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(150, 114, 241, 0.2);
+  border-radius: 12px;
+}
+
+.collection-name {
+  margin: 0 0 1rem;
+  color: #9672f1;
+}
+
+.collection-empty {
+  margin: 0;
+  color: #c9c9d1;
+}
+
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Móvil */
+@media (max-width: 600px) {
+  .collection-form {
+    flex-direction: column;
+  }
+
+  .collection-input {
+    max-width: none;
+  }
+}
