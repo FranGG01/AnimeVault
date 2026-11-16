@@ -17,6 +17,9 @@ export function CollectionsProvider({ children }) {
   function addAnimeToCollection(collectionId, anime) {
     const updated = collections.map((collection) => {
       if (collection.id === collectionId) {
+        if (collection.animes.some((a) => a.mal_id === anime.mal_id)) {
+          return collection;
+        }
         return { ...collection, animes: [...collection.animes, anime] };
       }
       return collection;
@@ -26,7 +29,9 @@ export function CollectionsProvider({ children }) {
   }
 
   return (
-    <CollectionsContext.Provider value={{ collections, createCollection, addAnimeToCollection }}>
+    <CollectionsContext.Provider
+      value={{ collections, createCollection, addAnimeToCollection }}
+    >
       {children}
     </CollectionsContext.Provider>
   );
